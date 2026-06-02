@@ -1,70 +1,326 @@
-# Getting Started with Create React App
+AI Chatbot Website Documentation
+Project Overview
+The AI Chatbot Website is a full-stack MERN application developed using React.js, Node.js, Express.js, and MongoDB.
+The application provides secure user authentication, dashboard management, and AI chatbot interaction.
+Features
+User Registration
+User Login Authentication
+JWT Token Authorization
+Protected Dashboard
+Fetch Users
+Delete Users
+AI Chatbot Integration
+Dark & Light Mode
+Responsive UI Design
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Technologies Used
+Technology
+Purpose
+React.js
+Frontend UI
+Node.js
+Backend Runtime
+Express.js
+REST API Server
+MongoDB
+Database
+Mongoose
+Database Modeling
+Axios
+API Requests
+JWT
+Authentication
+bcryptjs
+Password Encryption
+CSS
+Styling
 
-## Available Scripts
 
-In the project directory, you can run:
+Project Structure
+project/
+│
+├── client/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Navbar.js
+│   │   │   ├── ProtectedRoute.js
+│   │   │
+│   │   ├── context/
+│   │   │   └── ThemeContext.js
+│   │   │
+│   │   ├── pages/
+│   │   │   ├── Home.js
+│   │   │   ├── Login.js
+│   │   │   ├── Register.js
+│   │   │   ├── Dashboard.js
+│   │   │   ├── About.js
+│   │   │   └── Contact.js
+│   │   │
+│   │   ├── images/
+│   │   ├── App.js
+│   │   └── App.css
+│   │
+│   └── package.json
+│
+├── server/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   ├── server.js
+│   └── package.json
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Frontend Setup
+Install Frontend Packages
+npm install
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Start Frontend Server
+npm start
 
-### `npm test`
+Frontend URL
+http://localhost:3001
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
+Backend Setup
+Install Backend Packages
+npm install express mongoose cors dotenv jsonwebtoken bcryptjs
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Start Backend Server
+node server.js
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Backend URL
+http://localhost:3000
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+Environment Variables
+Create a .env file inside the server folder.
+MONGO_URI=mongodb+srv://yamunalinux12_db_user:yamuna12@cluster0.s6caphd.mongodb.net/
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+JWT_SECRET=mysecretkey
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+OPENROUTER_API_KEY=sk-or-v1-db872300a8b2a80d78d39dfbfaac6de4e19b315bc6851529cacc61b4ff97171
 
-## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+API Endpoints
+1. Register User
+Endpoint
+POST /api/register
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Request Body
+{
+  "name": "John",
+  "email": "john@gmail.com",
+  "password": "123456"
+}
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+2. Login User
+Endpoint
+POST /api/login
 
-### Analyzing the Bundle Size
+Request Body
+{
+  "email": "john@gmail.com",
+  "password": "123456"
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Response
+{
+  "token": "jwt-token"
+}
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+3. Get Users
+Endpoint
+GET /api/users
 
-### Advanced Configuration
+Headers
+Authorization: Bearer token
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+4. Delete User
+Endpoint
+DELETE /api/users/:id
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
+5. AI Chat API
+Endpoint
+POST /api/chat
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Request Body
+{
+  "message": "Hello AI"
+}
+
+Response
+{
+  "reply": "Hello User"
+}
+
+
+Authentication Flow
+Step-by-Step Process
+User registers an account
+User logs into the application
+Backend generates JWT token
+Token stored in localStorage
+Protected routes verify token
+API requests include Authorization headers
+Example
+headers: {
+  Authorization: `Bearer ${token}`,
+}
+
+
+Frontend Pages
+
+
+Home Page
+Features
+Responsive Navbar
+Hero Section
+AI Illustration
+Call-to-Action Buttons
+Dark & Light Mode Toggle
+Register Page
+Features
+Name Input
+Email Input
+Password Input
+Form Validation
+Register Button
+
+Login Page
+Features
+Email Input
+Password Input
+JWT Authentication
+Login Button
+
+Dashboard Page
+Features
+Protected Route Access
+Fetch Users
+Delete Users
+AI Chatbot Section
+API Integration
+Loading States
+
+Dark & Light Mode
+The project supports dynamic theme switching using React Context API.
+Theme Features
+Dark Mode
+Light Mode
+Smooth UI Transition
+Theme Toggle Button
+Example
+const {
+  darkMode,
+  toggleTheme,
+} = useContext(ThemeContext);
+
+
+Axios API Example
+const res = await axios.get(
+  "http://localhost:3000/api/users",
+  {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }
+);
+
+
+Protected Routes
+The dashboard route is protected using a custom ProtectedRoute component.
+Example
+<Route
+  path="/dashboard"
+  element={
+    <ProtectedRoute>
+      <Dashboard />
+    </ProtectedRoute>
+  }
+/>
+
+
+Common Errors & Solutions
+1. CORS Error
+Install CORS
+npm install cors
+
+Backend Configuration
+const cors = require("cors");
+
+
+app.use(cors());
+
+
+2. React Hook Warning
+Warning
+React Hook useEffect has a missing dependency
+
+Solution
+Use useCallback().
+Example
+const fetchUsers = useCallback(() => {
+  // API logic
+}, []);
+
+
+useEffect(() => {
+  fetchUsers();
+}, [fetchUsers]);
+
+
+3. React Router Navigation Issue
+Problem
+Using <a href="/"> refreshes the page.
+Solution
+Use Link from react-router-dom.
+Example
+import { Link } from "react-router-dom";
+
+
+<Link to="/login">Login</Link>
+
+
+UI & CSS Features
+Design Features
+Modern Responsive Layout
+Gradient Backgrounds
+Rounded Inputs
+Hover Effects
+Smooth Animations
+Clean Navbar Design
+Mobile Responsive UI
+
+Future Improvements
+Real AI API Integration
+Chat History
+User Profile Management
+Admin Dashboard
+Image Upload
+Voice Assistant
+Fully Responsive Mobile Design
+Database Optimization
+
+Conclusion
+This AI Chatbot Website project demonstrates:
+Full-Stack MERN Development
+REST API Integration
+JWT Authentication
+React State Management
+Protected Routing
+Responsive Web Design
+AI Chatbot Functionality
+Dark & Light Theme Management
+This project is suitable for:
+College Projects
+Portfolio Projects
+MERN Stack Practice
+AI Chatbot Learning
+Full-Stack Development Practice
+
