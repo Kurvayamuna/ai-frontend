@@ -1,0 +1,110 @@
+/* REGISTER PAGE - LIGHT MODE */
+
+.register-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* Soft light gradient background */
+  background: linear-gradient(
+    135deg,
+    #f5f7fa,
+    #dfe9f3,
+    #ffffff
+  );
+
+  font-family: Arial, sans-serif;
+}
+
+.register-card {
+  width: 420px;
+
+  background: #ffffff;
+
+  padding: 45px;
+
+  border-radius: 20px;
+
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+
+  text-align: center;
+
+  transition: 0.3s ease;
+}
+
+.register-card:hover {
+  transform: translateY(-3px);
+
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+.register-card h2 {
+  margin-bottom: 30px;
+
+  color: #2a5298;
+
+  font-size: 42px;
+
+  font-weight: bold;
+}
+
+.register-card input {
+  width: 100%;
+
+  padding: 15px;
+
+  margin-bottom: 20px;
+
+  border: 1px solid #d0d7e2;
+
+  border-radius: 12px;
+
+  font-size: 16px;
+
+  background: #f9fbfd;
+
+  outline: none;
+
+  transition: all 0.3s ease;
+}
+
+.register-card input:focus {
+  border-color: #4facfe;
+
+  background: #ffffff;
+
+  box-shadow: 0 0 10px rgba(79, 172, 254, 0.3);
+}
+
+.register-card button {
+  width: 100%;
+
+  padding: 15px;
+
+  border: none;
+
+  border-radius: 12px;
+
+  background: linear-gradient(
+    90deg,
+    #4facfe,
+    #2a5298
+  );
+
+  color: white;
+
+  font-size: 20px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: all 0.3s ease;
+}
+
+.register-card button:hover {
+  background: #1f2937;
+
+  transform: translateY(-2px);
+}
