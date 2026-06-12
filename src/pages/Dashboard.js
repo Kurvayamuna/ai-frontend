@@ -1,13 +1,11 @@
-import React, { useEffect, useState, useCallback, } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import axios from "axios";
 import illustration from "../images/ai-chatbot.jpg";
 import "./Dashboard.css";
 
-// 🌐 YOUR LIVE DEPLOYMENT BACKEND URL
 const API_BASE = "https://ai-backend-10-jcrs.onrender.com";
 
 function Dashboard() {
-
   // USERS
   const [users, setUsers] = useState([]);
 
@@ -16,6 +14,9 @@ function Dashboard() {
   const [chat, setChat] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // Auto-scroll ref for chat
+  const messagesEndRef = useRef(null);
+
   // TOKEN
   const token = localStorage.getItem("token");
 
@@ -23,15 +24,13 @@ function Dashboard() {
   // FETCH USERS
   // =========================
   const fetchUsers = useCallback(async () => {
+    if (!token) return; // Prevent calling if token doesn't exist
     try {
-      const res = await axios.get(
-        `${API_BASE}/api/users`, // <-- Updated to Live URL
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await axios.get(`${API_BASE}/api/users`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setUsers(res.data);
     } catch (error) {
       console.log(error.response?.data);
@@ -41,23 +40,27 @@ function Dashboard() {
     }
   }, [token]);
 
- useEffect(() => {
-  fetchUsers();
-}, []); // <-- ESLint is complaining that 'fetchUsers' isn't inside this array
+  // ✅ Fixed ESLint Warning: fetchUsers added to dependency array
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+  // Auto-scroll chat window when a new message arrives
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chat, loading]);
 
   // =========================
   // DELETE USER
   // =========================
   const deleteUser = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
     try {
-      await axios.delete(
-        `${API_BASE}/api/users/${id}`, // <-- Updated to Live URL
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      await axios.delete(`${API_BASE}/api/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       fetchUsers();
     } catch (error) {
       console.log(error.response?.data);
@@ -68,16 +71,10 @@ function Dashboard() {
   // AI CHAT
   // =========================
   const sendMessage = async () => {
-    if (!message.trim()) return;
+    if (!message.trim() || loading) return;
 
-    // Add user message
-    const newChat = [
-      ...chat,
-      {
-        sender: "user",
-        text: message,
-      },
-    ];
+    const userMsg = message;
+    const newChat = [...chat, { sender: "user", text: userMsg }];
 
     setChat(newChat);
     setLoading(true);
@@ -85,10 +82,8 @@ function Dashboard() {
 
     try {
       const res = await axios.post(
-        `${API_BASE}/api/chat`, // <-- Updated to Live URL
-        {
-          message: message,
-        },
+        `${API_BASE}/api/chat`,
+        { message: userMsg },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -96,22 +91,15 @@ function Dashboard() {
         }
       );
 
-      // Backend returns: { reply: "AI text" }
       setChat([
         ...newChat,
-        {
-          sender: "bot",
-          text: res.data.reply,
-        },
+        { sender: "bot", text: res.data.reply },
       ]);
     } catch (error) {
       console.log(error.response?.data);
       setChat([
         ...newChat,
-        {
-          sender: "bot",
-          text: "Error connecting to AI",
-        },
+        { sender: "bot", text: "Error connecting to AI" },
       ]);
     }
     setLoading(false);
@@ -152,18 +140,23 @@ function Dashboard() {
           ))}
 
           {loading && <div className="typing">AI is typing...</div>}
+          {/* Scroll anchor */}
+          <div ref={messagesEndRef} />
         </div>
 
-        {/* INPUT */}
+        {/* INPUT AREA */}
         <div className="input-area">
           <input
             type="text"
             placeholder="Type your message..."
             value={message}
+            disabled={loading} // Disable input while waiting for AI
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           />
-          <button onClick={sendMessage}>Send</button>
+          <button onClick={sendMessage} disabled={loading}>
+            {loading ? "..." : "Send"}
+          </button>
         </div>
       </div>
     </div>
